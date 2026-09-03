@@ -114,8 +114,12 @@
             {% else %}
                 <div class="book-icon">📖</div>
             {% endif %}
-
-            <h2>{{ book.title }}</h2>
+.
+            <h2>
+    <a href="{% url 'book_detail' book.id %}">
+        {{ book.title }}
+    </a>
+</h2>
 
             <p class="author">
                 By {{ book.author }}
@@ -158,6 +162,15 @@
         {% endfor %}
 
     </div>
+<div class="newsletter">
+        <h2>📧 Subscribe to Our Newsletter</h2>
+        <p>Get updates about new books and offers!</p>
 
+        <form method="POST" action="{% url 'subscribe' %}">
+            {% csrf_token %}
+            <input type="email" name="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+    </div>
 </body>
 </html>

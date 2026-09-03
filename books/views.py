@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Book, Cart, CartItem
-
+from .models import Book, Cart, CartItem, Subscriber
+from .recommendations import get_recommendations
 
 def book_list(request):
     books = Book.objects.all()
@@ -40,3 +40,24 @@ def add_to_cart(request, book_id):
     item.save()
 
     return redirect('cart')
+
+def subscribe(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+
+        if email:
+            Subscriber.objects.get_or_create(email=email)
+
+        return redirect('home')
+
+    return redirect('home')
+
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
+
+    recommended_books = get_recommendations(book)
+
+    return render(request, 'books/book_detail.html', {
+        'book': book,
+        'recommended_books': recommended_books,
+    })
