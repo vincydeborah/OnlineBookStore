@@ -1,0 +1,114 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ book.title }}</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 30px;
+        }
+
+        .book {
+            margin-bottom: 40px;
+        }
+
+        .book img {
+            width: 200px;
+            height: 280px;
+            object-fit: cover;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+        }
+
+        .recommended-book {
+            display: inline-block;
+            width: 200px;
+            margin-right: 20px;
+            vertical-align: top;
+        }
+
+        .recommended-book img {
+            width: 150px;
+            height: 210px;
+            object-fit: cover;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 15px;
+            background: #333;
+            color: white;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="book">
+
+        <h1>{{ book.title }}</h1>
+
+        {% if book.image %}
+            <img src="{{ book.image.url }}" alt="{{ book.title }}">
+        {% endif %}
+
+        <h3>Author: {{ book.author }}</h3>
+
+        <p>{{ book.description }}</p>
+
+        <p><strong>Price: ₹{{ book.price }}</strong></p>
+
+        <a class="button" href="{% url 'add_to_cart' book.id %}">
+            Add to Cart
+        </a>
+
+    </div>
+
+
+    <div class="recommendations">
+
+        <h2>🤖 Recommended Books for You</h2>
+
+        {% if recommended_books %}
+
+            {% for recommended_book in recommended_books %}
+
+                <div class="recommended-book">
+
+                    {% if recommended_book.image %}
+                        <img src="{{ recommended_book.image.url }}"
+                             alt="{{ recommended_book.title }}">
+                    {% endif %}
+
+                    <h3>{{ recommended_book.title }}</h3>
+
+                    <p>By {{ recommended_book.author }}</p>
+
+                    <p>₹{{ recommended_book.price }}</p>
+
+                    <a class="button"
+                       href="{% url 'book_detail' recommended_book.id %}">
+                        View Book
+                    </a>
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <p>No recommendations available yet.</p>
+
+        {% endif %}
+
+    </div>
+
+</body>
+</html>
